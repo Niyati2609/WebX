@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        #posts {
+            margin-top: 20px;
+        }
+        .post {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .post h2 {
+            margin-top: 0;
+        }
+        .post p {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Latest Posts</h1>
+        <div id="posts"></div>
+        <button id="loadPosts">Load Posts</button>
+    </div>
+
+    <script>
+        document.getElementById('loadPosts').addEventListener('click', function() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts', true);
+            xhr.onload = function() {
+                if (this.status == 200) {
+                    var posts = JSON.parse(this.responseText);
+                    var output = '';
+                    posts.forEach(function(post) {
+                        output += `
+                            <div class="post">
+                                <h2>${post.title}</h2>
+                                <p>${post.body}</p>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('posts').innerHTML = output;
+                }
+            }
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
